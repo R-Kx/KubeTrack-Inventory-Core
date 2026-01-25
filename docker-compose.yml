@@ -1,0 +1,48 @@
+version: "3.8"
+
+services:
+  api:
+    build: .
+    container_name: KubeTrack-Inventory-Core 
+    ports:
+      - "7000:7000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env 
+    networks:
+      - KubeTrack-network
+
+  db:
+    image: postgres:15
+    container_name: kubetrack-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USERNAME=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PYTHONBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME} -d ${DB_NAME}"]
+      interval: 7s
+      timeout: 7s
+      retries: 5
+    networks:
+      - KubeTrack-network
+
+networks:
+  KubeTrack-network:
+    driver: bridge
+
+
+volumes:
+  postgres_volume:
