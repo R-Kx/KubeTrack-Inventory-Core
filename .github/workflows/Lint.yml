@@ -9,6 +9,10 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
   Linter:
     runs-on: ${{matrix.os}}
