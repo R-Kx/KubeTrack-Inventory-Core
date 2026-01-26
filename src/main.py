@@ -10,6 +10,7 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Inventory API with DB")
 
+
 # Pydantic Model (მონაცემების ვალიდაცია Request/Response-ისთვის)
 class ItemSchema(BaseModel):
     name: str
@@ -19,18 +20,22 @@ class ItemSchema(BaseModel):
     class Config:
         from_attributes = True
 
+
 class ItemResponse(ItemSchema):
     id: int
+
 
 @app.get("/")
 def read_root():
     return {"status": "active", "db_type": "postgresql"}
+
 
 @app.get("/items", response_model=List[ItemResponse])
 def get_items(db: Session = Depends(get_db)):
     """Get all items from DB"""
     items = db.query(ItemDB).all()
     return items
+
 
 @app.post("/items", response_model=ItemResponse, status_code=201)
 def create_item(item: ItemSchema, db: Session = Depends(get_db)):
@@ -41,6 +46,7 @@ def create_item(item: ItemSchema, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_item)
     return new_item
+
 
 @app.get("/health")
 def health_check():
