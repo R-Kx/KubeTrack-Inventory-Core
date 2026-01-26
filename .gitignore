@@ -9,4 +9,3 @@ venv/
 .DS_Store
 Thumbs.db
 venv
-.flake8
