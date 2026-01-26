@@ -18,7 +18,7 @@ jobs:
         python-version: ['3.9', '3.10', '3.11']
     steps:
       - name: Checkout code
-        uses: actions/chceckout@v5
+        uses: actions/checkout@v5
 
       - name: Setup python
         uses: actions/setup-python@v4
