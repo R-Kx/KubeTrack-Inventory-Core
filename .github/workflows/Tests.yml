@@ -1,0 +1,54 @@
+name: Tests
+
+on:
+  workflow_run:
+    workflows:
+      - Linter
+    branches:
+      - main
+    types:
+      - completed
+
+jobs:
+  Run-Tests:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: [ '3.9', '3.10', '3.11' ]
+    services:
+      postgres_db:
+        image: postgres:15
+        env:
+          POSTGRES_USERNAME: test_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: test_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v5
+
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{matrix.python-version}}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install --no-cache-dir -r requirements.txt
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://test_user:password@localhost:5432/test_db
+          PYTHONPATH: .
+        run: pytest
+          
+        
+    
