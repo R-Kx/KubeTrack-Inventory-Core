@@ -2,8 +2,7 @@ name: Tests
 
 on:
   workflow_run:
-    workflows:
-      - Linter
+    workflows: ["Linter"]
     branches:
       - main
     types:
@@ -11,6 +10,7 @@ on:
 
 jobs:
   Run-Tests:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
