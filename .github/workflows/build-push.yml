@@ -18,7 +18,7 @@ jobs:
 
       - name: Docker metadata
         id: meta
-        uses: docker/metadata@v5
+        uses: docker/metadata-action@v5
         with:
           images: rkxx/kubetrack
           tags: |
@@ -29,8 +29,7 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
             type=sha
-  
-        
+         
       - name: Login to DockerHUB
         uses: docker/login-action@v3
         with:
