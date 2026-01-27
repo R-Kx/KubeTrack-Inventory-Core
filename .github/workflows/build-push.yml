@@ -1,0 +1,50 @@
+name: Build-push
+
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    branches:
+      - main 
+    types:
+      - completed
+
+jobs:
+  Build-push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata@v5
+        with:
+          images: rkxx/kubetrack
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=workflow_run
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+  
+        
+      - name: Login to DockerHUB
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PAT }}
+
+      - name: Setup docker buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build-push docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          workflow_run: true
+          tags: ${{ steps.meta.outputs.tags }}
+          
+          
