@@ -3,10 +3,9 @@ name: Build-push
 on:
   workflow_run:
     workflows: ["Tests"]
-      branches:
-        - main 
-      types:
-        - completed
+    branches: ["main"]
+    types: [completed]
+    
 
 jobs:
   Build-push:
