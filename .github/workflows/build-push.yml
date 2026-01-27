@@ -1,17 +1,16 @@
 name: Build-push
 
 on:
-  #workflow_run:
-   # workflows: ["Tests"]
-    #branches:
-     # - main 
-    #types:
-      #- completed
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Tests"]
+      branches:
+        - main 
+      types:
+        - completed
 
 jobs:
   Build-push:
-    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
