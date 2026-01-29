@@ -1,0 +1,6 @@
+*.swap
+*.bak
+*~
+.DS_Store
+charts/*.tgz
+tests/

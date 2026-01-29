@@ -1,0 +1,32 @@
+replicaCount: 4
+
+api:
+  name: inventory-api
+  image:
+    repository: rkxx/kubetrack
+    tag: latest
+    pullPolicy: Always
+  containerPort: 7000
+  service:
+    type: LoadBalancer
+    port: 80
+    externalIP: 192.168.0.200
+
+db:
+  name: postgres-db
+  image: postgres:15
+  user: postgres
+  password: "password"
+  dbName: inventory_db
+  port: 5432
+  storage:
+    size: 1Gi
+    mountpath: /var/lib/postgresql/data
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
