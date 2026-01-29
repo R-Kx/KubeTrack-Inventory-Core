@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-db
+spec:
+  serviceName: postgres-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: kubetrack-postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: postgres-db-credentials
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pvc-db
+      volumes:
+        - name: pvc-db
+          persistentVolumeClaim:
+            claimName: pvc-db

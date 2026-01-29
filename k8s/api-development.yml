@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-api
+  labels:
+    app: inventory-api
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: inventory-api
+  template:
+    metadata:
+      labels:
+        app: inventory-api
+    spec:
+      containers:
+        - name: inventory-api-container
+          image: rkxx/kubetrack:latest
+          ports:
+          - containerPort: 7000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres-db:5432/$(POSTGRES_DB)"
+          envFrom:
+            - secretRef:
+                name: postgres-db-credentials
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 7000
+            initialDelaySeconds: 12
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 7000           
+            initialDelaySeconds: 5
+            periodSeconds: 10
