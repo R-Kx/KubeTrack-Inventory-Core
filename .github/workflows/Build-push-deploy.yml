@@ -48,4 +48,31 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           
+      - name: Upload as artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: helm-charts
+          path: charts/
+
+  Deploy:
+    runs-on: self-hosted
+    needs: [ Build-push ]
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: helm-charts
+          path: ./charts
+
+      - name: Deploy to k3s 
+        run: |
+          export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+          helm upgrade --install inventory-core ./charts/Kubetrack-inventory-api \
+            --namespace default \
+            --set image.repository=${{ vars.DOCKERHUB_USERNAME }}/kubetrack \
+            --set image.tag=sha-${{ needs.Build-push.outputs.image_tag }} \
+            --wait
+          
+          
+          
           
