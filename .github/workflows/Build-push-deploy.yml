@@ -67,7 +67,7 @@ jobs:
       - name: Deploy to k3s 
         run: |
           export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-          helm upgrade --install inventory-core ./charts/Kubetrack-inventory-api \
+          helm upgrade --install inventory-prod ./Kubetrack-inventory-api \
             --namespace default \
             --set image.repository=${{ vars.DOCKERHUB_USERNAME }}/kubetrack \
             --set image.tag=sha-${{ needs.Build-push.outputs.image_tag }} \
