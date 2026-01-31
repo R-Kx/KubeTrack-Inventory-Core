@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: helm-charts
-          path: charts/KubeTrack-invenotry-api
+          path: charts/KubeTrack-inventory-api
 
   Deploy:
     runs-on: self-hosted
