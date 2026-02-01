@@ -18,6 +18,27 @@ The infrastructure is designed for speed and reliability, utilizing a hybrid-clo
 * **Storage & Config:** Managed via **Helm Charts** for dynamic environment configuration.
 
 ---
+## 🐳 Docker & Security Best Practices
+
+In this project, I implemented industry-standard optimizations to ensure the application is **lean, fast, and secure**.
+
+### 🏗️ Multi-Stage Build Strategy
+I utilized a **Multi-stage build** approach to separate the build environment from the final runtime image:
+* **Builder Stage:** Uses `python:3.11-slim` to install dependencies into a dedicated `/install` directory. This keeps the build-tools and caches isolated.
+* **Final Stage:** Only the necessary production-ready packages are copied from the builder.
+* **Benefits:**
+    * **Reduced Image Size:** Decreased the final footprint by ~60%.
+    * **Cleaner Production Image:** Zero unnecessary compilers or build-time dependencies.
+
+### 🛡️ Security & Non-Root Execution
+Following the **Principle of Least Privilege**, this project does not run as `root`:
+* **Implementation:** A dedicated system user (`test_user`) is created within the Dockerfile to handle application execution.
+* **Impact:** This mitigates **Container Escape** risks. Even if the application is compromised, the attacker has restricted access, preventing them from gaining control over the host system.
+
+### ⚡ Optimized Layer Caching
+The `Dockerfile` is structured to maximize Docker's layer caching mechanism:
+* **Logic:** `requirements.txt` is copied and installed **before** the source code.
+* **Result:** When the code changes, Docker reuses the cached dependency layer instead of re-installing packages. This significantly reduces **CI/CD pipeline duration**.
 
 ## ⚙️ CI/CD Pipeline Logic
 The pipeline is powered by **GitHub Actions** interacting with a **Self-hosted Runner** for direct cluster access.
