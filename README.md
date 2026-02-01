@@ -49,13 +49,14 @@ A DevOps project is incomplete without visibility. This cluster is monitored via
 
 ### Installation
 
-# Clone the repository
-git clone [https://github.com/R-Kx/KubeTrack-Inventory-Core.git](https://github.com/R-Kx/KubeTrack-Inventory-Core.git)
+### Clone the repository
 
-# Deploy using Helm
-helm upgrade --install inventory-api ./charts/KubeTrack-inventory-api \
-  --namespace default \
-  --values ./charts/KubeTrack-inventory-api/values.yaml
+    git clone [https://github.com/R-Kx/KubeTrack-Inventory-Core.git](https://github.com/R-Kx/KubeTrack-Inventory-Core.git)
+
+### Deploy using Helm
+    helm upgrade --install inventory-api ./charts/KubeTrack-inventory-api \
+    --namespace default \
+    --values ./charts/KubeTrack-inventory-api/values.yaml
 
 ---
 
