@@ -61,12 +61,12 @@ helm upgrade --install inventory-api ./charts/KubeTrack-inventory-api \
 
 ### 🛠️ Tech Stack & Tools
 
-  #  Cloud/Infra: K3s, Ubuntu Server, MetalLB.
+  ##  Cloud/Infra: K3s, Ubuntu Server, MetalLB.
 
-  #  Tools: Helm, Docker, GitHub Actions, Nginx Ingress.
+  ##  Tools: Helm, Docker, GitHub Actions, Nginx Ingress.
 
-  #  Monitoring: Loki, Grafana, Promtail.
+  ##  Monitoring: Loki, Grafana, Promtail.
 
 ---
 
-### Developed by Ramazi – Building scalable, automated systems one pod at a time.
+### Developed by R-Kx – Building scalable, automated systems one pod at a time.
