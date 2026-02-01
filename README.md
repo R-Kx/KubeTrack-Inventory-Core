@@ -56,3 +56,17 @@ git clone [https://github.com/R-Kx/KubeTrack-Inventory-Core.git](https://github.
 helm upgrade --install inventory-api ./charts/KubeTrack-inventory-api \
   --namespace default \
   --values ./charts/KubeTrack-inventory-api/values.yaml
+
+---
+
+### 🛠️ Tech Stack & Tools
+
+  #  Cloud/Infra: K3s, Ubuntu Server, MetalLB.
+
+  #  Tools: Helm, Docker, GitHub Actions, Nginx Ingress.
+
+  #  Monitoring: Loki, Grafana, Promtail.
+
+---
+
+### Developed by Ramazi – Building scalable, automated systems one pod at a time.
